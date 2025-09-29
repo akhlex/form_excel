@@ -1,0 +1,19 @@
+{
+  "name": "form-excel",
+  "version": "1.0.0",
+  "description": "This project contains:\r - A React frontend for the event landing page and registration form (in `client/`)\r - A Node.js/Express backend to handle registration and save data to Google Sheets (in `server/`)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.544.0",
+    "shadcn-ui": "^0.9.5",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.13"
+  }
+}
