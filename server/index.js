@@ -8,18 +8,43 @@ const PORT = process.env.PORT || 3001;
 
 // Configure CORS for your frontend
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite's default port
-  methods: ['POST'],
-  allowedHeaders: ['Content-Type']
+  origin: 'https://form-excel-one.vercel.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  credentials: true,
+  maxAge: 600
 }));
+// Manual CORS headers as fallback for Vercel
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://form-excel-one.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 app.use(bodyParser.json());
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Google Sheets setup
 const SPREADSHEET_ID = '1C7us1TPVhEdg5NJYLg-QXiS3p2oHKIz0zTu10m0gxsE'; // TODO: Replace with your Google Sheet ID
 const SHEET_NAME = 'Sheet1';
 
-// Load credentials from a file or environment variable
-const credentials = require('./credentials.json');
+// Load credentials from file or environment variable
+let credentials;
+try {
+  if (process.env.GOOGLE_CREDENTIALS) {
+    credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+  } else {
+    credentials = require('./credentials.json');
+  }
+} catch (error) {
+  console.error('Error loading credentials:', error);
+  process.exit(1);
+}
+
 const auth = new google.auth.GoogleAuth({
   credentials,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
