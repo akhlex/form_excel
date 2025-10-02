@@ -6,33 +6,17 @@ const { google } = require('googleapis');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS configuration
-const corsOptions = {
-  origin: ['https://form-excel-beryl.vercel.app', 'http://localhost:5173'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 204,
-  preflightContinue: false
-};
-
-// Enable CORS for all routes
-app.use(cors(corsOptions));
-
-// Handle OPTIONS requests explicitly
-app.options('*', (req, res) => {
-  res.status(204).send();
-});
-
-// Add security headers
+// Basic CORS setup
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://form-excel-beryl.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
   if (req.method === 'OPTIONS') {
-    return res.status(204).send();
+    res.sendStatus(200);
+    return;
   }
+  
   next();
 });
 

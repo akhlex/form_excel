@@ -19,8 +19,7 @@ function RegistrationForm() {
     e.preventDefault();
     try {
       console.log('Sending form data:', formData);
-      const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
-      const response = await fetch(`${apiUrl}/api/register`, {
+      const response = await fetch('https://form-excel-backend.vercel.app/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
