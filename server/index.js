@@ -6,20 +6,8 @@ const { google } = require('googleapis');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Basic CORS setup
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-    return;
-  }
-  
-  next();
-});
-
+// Enable CORS for all routes
+app.use(cors());
 app.use(bodyParser.json());
 
 // Google Sheets setup
