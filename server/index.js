@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 
 // Configure CORS for your frontend
 app.use(cors({
-  origin: 'https://form-excel-one.vercel.app',
+  origin: 'https://form-excel-beryl.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
@@ -17,7 +17,7 @@ app.use(cors({
 }));
 // Manual CORS headers as fallback for Vercel
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://form-excel-one.vercel.app');
+  res.header('Access-Control-Allow-Origin', 'https://form-excel-beryl.vercel.app');
   res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.header('Access-Control-Allow-Credentials', 'true');
