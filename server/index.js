@@ -6,27 +6,37 @@ const { google } = require('googleapis');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configure CORS for your frontend
-app.use(cors({
-  origin: 'https://form-excel-beryl.vercel.app',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+// CORS configuration
+const corsOptions = {
+  origin: ['https://form-excel-beryl.vercel.app', 'http://localhost:5173'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  maxAge: 600
-}));
-// Manual CORS headers as fallback for Vercel
+  optionsSuccessStatus: 204,
+  preflightContinue: false
+};
+
+// Enable CORS for all routes
+app.use(cors(corsOptions));
+
+// Handle OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  res.status(204).send();
+});
+
+// Add security headers
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'https://form-excel-beryl.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send();
+  }
   next();
 });
-app.use(bodyParser.json());
 
-// Handle preflight requests
-app.options('*', cors());
+app.use(bodyParser.json());
 
 // Google Sheets setup
 const SPREADSHEET_ID = '1C7us1TPVhEdg5NJYLg-QXiS3p2oHKIz0zTu10m0gxsE'; // TODO: Replace with your Google Sheet ID
