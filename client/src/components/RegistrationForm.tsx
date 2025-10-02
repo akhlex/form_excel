@@ -19,7 +19,8 @@ function RegistrationForm() {
     e.preventDefault();
     try {
       console.log('Sending form data:', formData);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+      const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+      const response = await fetch(`${apiUrl}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
